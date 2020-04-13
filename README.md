@@ -8,5 +8,5 @@
 ## Steps 
 
 - [x] Initialize project
+- [ ] Construct Entity Relations (JPA)
 - [ ] Implement Simple CRUD for each model
-- [ ] Construct Relations
