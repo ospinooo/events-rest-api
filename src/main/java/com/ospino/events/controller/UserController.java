@@ -1,13 +1,10 @@
 package com.ospino.events.controller;
 
-import com.ospino.events.model.Ticket;
 import com.ospino.events.model.User;
-import com.ospino.events.repository.TicketRepository;
 import com.ospino.events.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 

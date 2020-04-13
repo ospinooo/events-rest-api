@@ -5,8 +5,6 @@ import com.ospino.events.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.HttpServerErrorException.NotImplemented;
 
 import java.util.List;
 
