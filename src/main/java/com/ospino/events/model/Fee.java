@@ -1,8 +1,7 @@
 package com.ospino.events.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Fee {
@@ -10,4 +9,18 @@ public class Fee {
     @Id
     @GeneratedValue
     private long id;
+
+    @ManyToOne
+    private Event event;
+
+    @OneToMany(mappedBy = "fee")
+    private List<Ticket> tickets;
+
 }
+
+
+
+
+
+
+
