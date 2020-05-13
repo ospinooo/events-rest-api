@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("tickets")
@@ -49,7 +50,10 @@ public class TicketController {
      * @return
      */
     @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable("id") long id){ return ticketRepository.findById(id); };
+    public Ticket getTicket(@PathVariable("id") long id){
+        return ticketRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Fail -> Cause: Ticket not found."));
+    };
 
     /**
      * This could be transfer ticket to someone
@@ -66,11 +70,9 @@ public class TicketController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Ticket> deleteTicket(@PathVariable("id") long id){
-        Ticket ticket = ticketRepository.findById(id);
-        if (ticket == null) {
-            System.out.println("Ticket not found!");
-            return new ResponseEntity<Ticket>(HttpStatus.NOT_FOUND);
-        }
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Fail -> Cause: Ticket not found."));
+
         ticketRepository.deleteById(id);
         return new ResponseEntity<Ticket>(HttpStatus.OK);
     };
@@ -83,7 +85,7 @@ public class TicketController {
      * @return
      */
     @PostMapping()
-    public ResponseEntity<Event> buyTickets(@RequestBody List<EventPurchaseForm> body,
+    public ResponseEntity<Ticket> buyTickets(@RequestBody List<EventPurchaseForm> body,
                                             @RequestParam("event") Long event_id){
 
         Event event = eventRepository.findById(event_id).orElseThrow(() ->
@@ -94,7 +96,8 @@ public class TicketController {
         }
 
         body.forEach(eventPurchaseForm -> {
-            Fee fee = feeRepository.findById(eventPurchaseForm.getFeeId());
+            Fee fee = feeRepository.findById(eventPurchaseForm.getFeeId()).orElseThrow(() ->
+                    new RuntimeException("Fail -> Cause: Fee not found."));
 
             userRepository.findAllById(eventPurchaseForm.getUsers()).forEach(user -> {
                 Ticket ticket = new Ticket(fee, user);
@@ -102,7 +105,7 @@ public class TicketController {
             });
         });
 
-        return new ResponseEntity<Event>(HttpStatus.CREATED);
+        return new ResponseEntity<Ticket>(HttpStatus.CREATED);
     };
 
 
