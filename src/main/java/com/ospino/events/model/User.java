@@ -32,21 +32,33 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     /* SPECIFIC DATA */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Ticket> tickets;
 
-    @ManyToMany
-    @JoinTable(name = "user_event",
-            joinColumns = { @JoinColumn(name = "fk_user") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_event") })
-    private Set<Event> events;
+
+    @OneToMany(mappedBy = "user")
+    private List<Event> events_created;
+
+    /**
+     * Before being removed we set all the events created owner to null.
+     */
+    @PreRemove
+    private void preRemove() {
+        for (Event e : events_created) {
+            e.setUser(null);
+        }
+    }
 
     public User() {
     }
 
-    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String password) {
+    public User(
+            @NotBlank @Size(min = 3, max = 50) String username,
+            @NotBlank @Size(min = 6, max = 100) String password,
+            @NotBlank @Size(min = 6, max = 100) String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     public Long getId() {
@@ -60,7 +72,6 @@ public class User {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -68,7 +79,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
