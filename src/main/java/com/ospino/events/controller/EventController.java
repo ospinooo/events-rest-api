@@ -63,7 +63,8 @@ public class EventController {
      */
     @GetMapping("/{id}")
     public Object getEvent(@PathVariable("id") long id){
-        return eventRepository.findById(id);
+        return eventRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));
     };
 
 
@@ -99,11 +100,9 @@ public class EventController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable("id") long id){
-        Event event = eventRepository.findById(id);
-        if (event == null) {
-            System.out.println("Event not found!");
-            return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
-        }
+        Event event = eventRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));;
+
         event.setId(id);
         eventRepository.save(event);
         return new ResponseEntity<Event>(HttpStatus.OK);
@@ -117,11 +116,8 @@ public class EventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Event> deleteEvent(@PathVariable("id") long id){
-        Event event = eventRepository.findById(id);
-        if (event == null) {
-            System.out.println("Event not found!");
-            return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
-        }
+        Event event = eventRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Fail -> Cause: Event not found"));
 
         eventRepository.deleteById(id);
         return new ResponseEntity<Event>(HttpStatus.OK);
