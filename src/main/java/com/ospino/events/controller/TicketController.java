@@ -104,4 +104,16 @@ public class TicketController {
 
         return new ResponseEntity<Event>(HttpStatus.CREATED);
     };
+
+
+    @PatchMapping("/{id}/confirm")
+    public ResponseEntity<Ticket> confirmTicket(@PathVariable("id") Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Fail -> Cause: Ticket not found."));;
+
+        ticket.setConfirmed(true);
+        ticketRepository.save(ticket);
+        return new ResponseEntity<Ticket>(HttpStatus.OK);
+    };
+
 }
