@@ -27,6 +27,9 @@ public class SignUpForm {
     @Size(min = 6, max = 40)
     private String password;
 
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String email;
 
     /* FUNCTIONS */
 
@@ -53,4 +56,8 @@ public class SignUpForm {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 }

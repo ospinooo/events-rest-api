@@ -24,6 +24,10 @@ public class User {
     @Size(min=6, max = 100)
     private String password;
 
+    @NotBlank
+    @Size(min=6, max = 100)
+    private String email;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
@@ -68,6 +72,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public Set<Role> getRoles() {
         return roles;
