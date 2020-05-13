@@ -59,10 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/restApi/auth/**").permitAll()
-                .antMatchers("/restApi/events/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
-                .antMatchers("/restApi/exampleSecurity/user").hasRole("USER")
-                .antMatchers("/restApi/exampleSecurity/admin").hasRole("ADMIN")
+                .antMatchers("/auth/**").permitAll() // Sign Up or Sign In
+                .antMatchers("/events/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/fees/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/tickets/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/events/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/events/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
