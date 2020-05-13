@@ -32,6 +32,7 @@ public class Fee {
     public Integer getPrice() { return price; }
 
     public void setEvent(Event event) { this.event = event; }
+    public Long getEventId() { return this.event.getId(); }
     /*public Event getEvent() { return event; }*/
 }
 
