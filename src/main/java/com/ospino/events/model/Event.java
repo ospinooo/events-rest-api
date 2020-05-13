@@ -2,54 +2,55 @@ package com.ospino.events.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Time;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
 @Entity
 public class Event {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
     // General
-    private String name;
+    @NotNull
+    private String title;
+    @NotNull
+    private String subtitle;
+    @NotNull
     private String description; // Markdown.
-    private String color;
 
-    public String getName() {
-        return name;
-    }
 
-    public String getDescription() {
-        return description;
-    }
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-    public String getColor() {
-        return color;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Size(min=1)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private List<Fee> fees;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+    public Long getUserId() { return user.getId(); }
+    /*public User getUser() { return user; }*/
+    public void setUser(User user) { this.user = user; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public long getId() {
-        return id;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public void setId(long id) { this.id = id; }
+    public long getId() { return id; }
+
+    public String getSubtitle() { return subtitle; }
+    public void setSubtitle(String subtitle) { this.subtitle = subtitle; }
+
+    public List<Fee> getFees() { return fees; }
+    public void setFees(List<Fee> fees) { this.fees = fees; }
 
     /* Times
     private Time init_time;
