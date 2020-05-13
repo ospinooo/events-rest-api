@@ -1,5 +1,8 @@
 package com.ospino.events.model;
 
+import org.hibernate.annotations.Type;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -23,6 +26,10 @@ public class Ticket {
     @JoinColumn(name=USER_COLUMN_NAME)
     private User user;
 
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean confirmed;
+
     public Ticket() {}
 
     public Ticket(@NotBlank Fee fee, @NotBlank User user) {
@@ -30,7 +37,8 @@ public class Ticket {
         this.user = user;
     }
 
-    public User getUser() { return user; }
+    /* public User getUser() { return user; } */
+    public Long getUserId() { return user.getId(); }
     public void setUser(User user) { this.user = user; }
 
     public Fee getFee() { return fee; }
@@ -38,4 +46,7 @@ public class Ticket {
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
+
+    public void setConfirmed(Boolean confirmed) { this.confirmed = confirmed; }
+    public boolean isConfirmed() { return confirmed; }
 }
