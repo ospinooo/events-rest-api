@@ -27,7 +27,7 @@ import com.ospino.events.security.jwt.JwtProvider;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-@RequestMapping("/restApi/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     // Authentication
