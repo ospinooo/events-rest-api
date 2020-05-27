@@ -2,6 +2,7 @@ package com.ospino.events.controller;
 
 import com.ospino.events.model.Event;
 import com.ospino.events.model.Fee;
+import com.ospino.events.repository.EventRepository;
 import com.ospino.events.repository.FeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,11 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RequestMapping("fees")
 public class FeeController {
 
     @Autowired // Dependency injection
     private FeeRepository feeRepository;
+
+    @Autowired // Dependency injection
+    private EventRepository eventRepository;
+
 
     @GetMapping
     public List<Fee> getAllFees(){ return feeRepository.findAll(); };
@@ -26,17 +32,32 @@ public class FeeController {
             () -> new RuntimeException("Fail -> Cause: Fee not found"));
     };
 
-    @PostMapping
-    public ResponseEntity<Fee> addFee(){ return null; };
+    @PostMapping("/event/{id}")
+    public Fee addFee(@PathVariable("id") long id, @RequestBody Fee fee){
+        Event event = eventRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));
+
+        fee.setEvent(event);
+        feeRepository.save(fee);
+
+        event.addFee(fee);
+        eventRepository.save(event);
+
+        return fee;
+    };
 
     @PutMapping("/{id}")
-    public ResponseEntity<Fee> updateFee(@PathVariable("id") long id){
-        Fee fee = feeRepository.findById(id).orElseThrow(
+    public Fee updateFee(@RequestBody Fee fee, @PathVariable("id") long id){
+        Fee fee_prev = feeRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Fail -> Cause: Fee not found"));
 
+        Event event = eventRepository.findById(fee_prev.getEventId()).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));
+
         fee.setId(id);
+        fee.setEvent(event);
         feeRepository.save(fee);
-        return new ResponseEntity<Fee>(HttpStatus.OK);
+        return fee;
     };
 
     @DeleteMapping("/{id}")

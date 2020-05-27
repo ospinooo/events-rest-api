@@ -52,6 +52,10 @@ public class Event {
     public List<Fee> getFees() { return fees; }
     public void setFees(List<Fee> fees) { this.fees = fees; }
 
+    public void addFee(Fee fee) {
+        this.fees.add(fee);
+    }
+
     /* Times
     private Time init_time;
     private Time end_time;
