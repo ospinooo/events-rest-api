@@ -1,14 +1,10 @@
 package com.ospino.events.controller;
 
-import com.ospino.events.message.request.EventPurchaseForm;
 import com.ospino.events.model.Event;
-import com.ospino.events.model.Fee;
 import com.ospino.events.model.User;
 import com.ospino.events.repository.EventRepository;
 import com.ospino.events.repository.FeeRepository;
 import com.ospino.events.repository.UserRepository;
-import com.ospino.events.security.jwt.JwtProvider;
-import com.ospino.events.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -81,7 +74,7 @@ public class EventController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event, @AuthenticationPrincipal UserDetails userDetails){
+    public Event createEvent(@RequestBody Event event, @AuthenticationPrincipal UserDetails userDetails){
         // Get the user
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -97,7 +90,7 @@ public class EventController {
             feeRepository.save(fee);
         });
 
-        return new ResponseEntity<Event>(HttpStatus.CREATED);
+        return event;
     };
 
     /**
@@ -106,14 +99,29 @@ public class EventController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable("id") long id){
-        Event event = eventRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Fail -> Cause: Event not found"));;
+    public Event updateEvent(@RequestBody Event event,
+                             @PathVariable("id") long id,
+                             @AuthenticationPrincipal UserDetails userDetails){
 
+        String username = userDetails.getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User Not Found with -> username: " + username));
+
+        Event event_prev = eventRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));
+
+        event.setUser(user);
         event.setId(id);
+
+        event.getFees().forEach(fee -> {
+            fee.setEvent(event);
+            feeRepository.save(fee);
+        });
+
         eventRepository.save(event);
-        return new ResponseEntity<Event>(HttpStatus.OK);
-    };
+        return eventRepository.findById(event.getId()).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Event not found"));
+    }
 
 
     /**
@@ -129,5 +137,16 @@ public class EventController {
         eventRepository.deleteById(id);
         return new ResponseEntity<Event>(HttpStatus.OK);
     };
+
+    /**
+     * Delete all events
+     * @return
+     */
+    @DeleteMapping
+    public ResponseEntity<Event> deleteEvents(){
+        eventRepository.deleteAll();
+        return new ResponseEntity<Event>(HttpStatus.OK);
+    };
+
 
 }
