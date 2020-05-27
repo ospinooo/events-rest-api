@@ -1,16 +1,18 @@
 package com.ospino.events.controller;
 
-import com.ospino.events.model.Event;
 import com.ospino.events.model.User;
 import com.ospino.events.repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RequestMapping("users")
 public class UserController {
 
@@ -22,6 +24,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") long id){ return userRepository.findById(id); };
+
+    @GetMapping("/username/{username}")
+    public User getUser(@PathVariable("username") String username){
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new RuntimeException("Fail -> Cause: Username not found"));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id){
