@@ -48,13 +48,19 @@ public class EventController {
      * @return
      */
     @GetMapping
-    public Page<Event> getAllEvents(@RequestParam(defaultValue="id", name = "search") String search_key,
+    public Page<Event> getAllEvents(@RequestParam(defaultValue="", name = "search") String search,
                                     @RequestParam(defaultValue="0", name="page") Integer page,
-                                    @RequestParam(defaultValue="ASC", name="dir") String direction){
+                                    @RequestParam(defaultValue="ASC", name="dir") String direction,
+                                    @RequestParam(defaultValue="id", name="sort") String sort){
         direction = direction.toUpperCase();
+        if (!search.isEmpty()){
+            return eventRepository.findByTitle(search,
+                    PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), "title")));
+        }
+
         return eventRepository.findAll(
-                PageRequest.of(page, PAGE_SIZE,
-                        Sort.by(Sort.Direction.valueOf(direction), search_key)));
+                PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), sort)));
+
     };
 
     /**
