@@ -4,6 +4,7 @@ import com.ospino.events.message.request.LoginForm;
 import com.ospino.events.message.request.SignUpForm;
 import com.ospino.events.message.response.JwtResponse;
 import com.ospino.events.message.response.ResponseMessage;
+import com.ospino.events.message.response.ValidUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,28 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
+
+    /**
+     * Valid
+     * @param username
+     * @param email
+     * @return
+     */
+    @GetMapping("/valid")
+    public ResponseEntity<?> validUser(@RequestParam(defaultValue="", name = "username") String username,
+                             @RequestParam(defaultValue="", name = "email") String email) {
+        Boolean usernameValid = username.isEmpty() ?
+                false : !userRepository.existsByUsername(username);
+
+        Boolean emailValid = email.isEmpty() ?
+                false : !userRepository.existsByEmail(email);
+
+        return ResponseEntity.ok(new ValidUserResponse(usernameValid, emailValid));
+    }
+
+
+
+
     /**
      * Sign Up
      * @param signUpRequest is a body parameter of type SignUpForm
@@ -83,7 +106,12 @@ public class AuthController {
         }
 
         // New User
-        User user = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getEmail());
+        User user = new User(
+                signUpRequest.getName(),
+                signUpRequest.getUsername(),
+                passwordEncoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getEmail()
+        );
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
