@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={Ticket.USER_COLUMN_NAME, Ticket.FEE_COLUMN_NAME}))
 @Entity
 public class Ticket {
 
@@ -30,12 +30,26 @@ public class Ticket {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean confirmed;
 
+    @NotNull
+    private String assistantName;
+
+    @NotNull
+    private String assistantId;
+
     public Ticket() {}
 
-    public Ticket(@NotBlank Fee fee, @NotBlank User user) {
+    public Ticket(@NotBlank Fee fee, @NotBlank User user, String assistantName, String assistantId) {
         this.fee = fee;
         this.user = user;
+        this.assistantId = assistantId;
+        this.assistantName = assistantName;
     }
+
+    public String getAssistantName() { return assistantName; }
+    public void setAssistantName(String assistantName) { this.assistantName = assistantName; }
+
+    public String getAssistantId() { return assistantId; }
+    public void setAssistantId(String assistantId) { this.assistantId = assistantId; }
 
     /* public User getUser() { return user; } */
     public Long getUserId() { return user.getId(); }
