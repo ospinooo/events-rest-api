@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,8 @@ public class Event {
     @NotNull
     private String description; // Markdown.
 
+    @Basic
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -52,10 +55,11 @@ public class Event {
     public List<Fee> getFees() { return fees; }
     public void setFees(List<Fee> fees) { this.fees = fees; }
 
-    public void addFee(Fee fee) {
-        this.fees.add(fee);
-    }
+    public void addFee(Fee fee) { this.fees.add(fee); }
 
+    public Date getDate() { return date; }
+
+    public void setDate(Date date) { this.date = date; }
     /* Times
     private Time init_time;
     private Time end_time;

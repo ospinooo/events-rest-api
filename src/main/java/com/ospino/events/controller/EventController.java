@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RequestMapping("events")
@@ -44,10 +46,17 @@ public class EventController {
     public Page<Event> getAllEvents(@RequestParam(defaultValue="", name = "search") String search,
                                     @RequestParam(defaultValue="0", name="page") Integer page,
                                     @RequestParam(defaultValue="ASC", name="dir") String direction,
-                                    @RequestParam(defaultValue="id", name="sort") String sort){
+                                    @RequestParam(defaultValue="id", name="sort") String sort,
+                                    @RequestParam(defaultValue="", name="date") String date){
+        if (!date.isEmpty()){
+            Date sqlDate = Date.valueOf(date);
+            return eventRepository.findAllByDate(sqlDate, PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), sort)));
+        }
+
         direction = direction.toUpperCase();
+
         if (!search.isEmpty()){
-            return eventRepository.findByTitle(search,
+            return eventRepository.findAllByTitle(search,
                     PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), "title")));
         }
 
