@@ -1,6 +1,10 @@
 package com.ospino.events.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -9,6 +13,7 @@ public class Fee {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+
 
     @ManyToOne
     private Event event;
@@ -32,7 +37,22 @@ public class Fee {
     public Integer getPrice() { return price; }
 
     public void setEvent(Event event) { this.event = event; }
+    public Object getEventData() {
+        return new Object(){
+            long id = getEventId();
+            String title = getEventTitle();
+            Date date = getEventDate();
+
+            public Date getDate() { return date; }
+            public long getId() { return id; }
+            public String getTitle() { return title; }
+        };
+    }
+
     public Long getEventId() { return this.event.getId(); }
+    protected String getEventTitle() { return this.event.getTitle(); }
+    protected Date getEventDate() { return this.event.getDate(); }
+
     /*public Event getEvent() { return event; }*/
 }
 
