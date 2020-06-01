@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/events").permitAll()
                 .antMatchers("/events/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
                 .antMatchers("/fees/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
                 .antMatchers("/tickets/**").hasAnyRole("ADMIN","USER") // or for one role: hasRole("ADMIN")
