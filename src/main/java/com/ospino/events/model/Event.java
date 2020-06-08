@@ -37,6 +37,7 @@ public class Event {
 
 
     public Long getUserId() { return user.getId(); }
+    public String getUsername() { return user.getUsername(); }
     /*public User getUser() { return user; }*/
     public void setUser(User user) { this.user = user; }
 
