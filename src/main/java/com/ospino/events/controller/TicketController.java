@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -38,6 +39,7 @@ public class TicketController {
     private FeeRepository feeRepository;
 
     private static final int PAGE_SIZE = 16;
+    public int total =0;
 
     /**
      * Get all the tickets
@@ -106,19 +108,23 @@ public class TicketController {
             throw new RuntimeException("Fail -> Cause: Event fee number is different than the body given");
         }
 
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() ->
+                new RuntimeException("Fail -> Cause: User not found."));
+
+        total = 0;
+
         body.forEach(eventPurchaseForm -> {
             Fee fee = feeRepository.findById(eventPurchaseForm.getFeeId()).orElseThrow(() ->
                     new RuntimeException("Fail -> Cause: Fee not found."));
 
-            User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() ->
-                            new RuntimeException("Fail -> Cause: User not found."));
-
             eventPurchaseForm.getAssistants().forEach(assistant -> {
-                System.out.println(assistant.getName() + assistant.getId());
+                total = total + fee.getPrice();
                 Ticket ticket = new Ticket(fee, user, assistant.getName(), assistant.getId());
                 ticketRepository.save(ticket);
             });
         });
+        user.decreasePoints(total);
+        userRepository.save(user);
 
         return new ResponseEntity<Ticket>(HttpStatus.CREATED);
     };

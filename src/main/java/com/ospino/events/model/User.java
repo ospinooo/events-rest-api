@@ -1,7 +1,10 @@
 package com.ospino.events.model;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +45,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Event> events_created;
+
+    @Column(nullable = false, columnDefinition = "default 100")
+    private long points;
 
     /**
      * Before being removed we set all the events created owner to null.
@@ -99,5 +105,17 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
+    }
+
+    public void decreasePoints(int total) {
+        this.points = this.points - total;
     }
 }
