@@ -20,6 +20,8 @@ public class Fee {
 
     private Integer price;
     private String title;
+
+    @Column(name="description", columnDefinition="TEXT")
     private String description;
 
     @OneToMany(mappedBy = "fee", cascade = CascadeType.REMOVE)

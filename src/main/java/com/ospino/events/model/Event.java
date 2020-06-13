@@ -20,7 +20,8 @@ public class Event {
     private String title;
     @NotNull
     private String subtitle;
-    @NotNull
+
+    @Column(name="description", columnDefinition="TEXT")
     private String description; // Markdown.
 
     @Basic
