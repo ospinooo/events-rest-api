@@ -47,10 +47,13 @@ public class EventController {
                                     @RequestParam(defaultValue="0", name="page") Integer page,
                                     @RequestParam(defaultValue="ASC", name="dir") String direction,
                                     @RequestParam(defaultValue="id", name="sort") String sort,
-                                    @RequestParam(defaultValue="", name="date") String date){
-        if (!date.isEmpty()){
-            Date sqlDate = Date.valueOf(date);
-            return eventRepository.findAllByDate(sqlDate, PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), sort)));
+                                    @RequestParam(defaultValue="", name="date_init") String dateInit,
+                                    @RequestParam(defaultValue="", name="date_end") String dateEnd){
+        if (!dateInit.isEmpty() && !dateEnd.isEmpty()){
+            Date sqlDateInit = Date.valueOf(dateInit);
+            Date sqlDateEnd= Date.valueOf(dateEnd);
+            return eventRepository.findAllByDate(sqlDateInit,sqlDateEnd ,
+                    PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), sort)));
         }
 
         direction = direction.toUpperCase();

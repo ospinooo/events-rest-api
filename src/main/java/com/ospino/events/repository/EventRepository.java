@@ -19,7 +19,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query("select e from Event e where LOWER(e.title) like LOWER(CONCAT('%',:title,'%'))")
     Page<Event> findAllByTitle(@Param("title") String title, Pageable pageRequest);
 
-    @Query("select e from Event e where e.date = :date")
-    Page<Event> findAllByDate(@Param("date") Date date, Pageable pageRequest);
+    @Query("select e from Event e where e.date >= :date_init and e.date <= :date_end")
+    Page<Event> findAllByDate(@Param("date_init") Date date_init,@Param("date_end") Date date_end, Pageable pageRequest);
 
 }
