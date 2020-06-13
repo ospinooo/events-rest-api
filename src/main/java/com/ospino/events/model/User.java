@@ -47,7 +47,7 @@ public class User {
     private List<Event> events_created;
 
 
-    @Column(name = "points", nullable = false, columnDefinition = "int default 100")
+    @Column(name = "points", nullable = false, columnDefinition = "int default 1000")
     private Integer points;
 
 
@@ -73,7 +73,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.points = 100;
+        this.points = 1000;
     }
 
     public Long getId() {
