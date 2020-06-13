@@ -1,21 +1,24 @@
-# Event Rest API
+<h1 align="center">Welcome to events-rest-api 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-- Events
-- Users
-- Fees
-- Tickets
+> This repository holds the code for the spring boot rest api created with hibernate and uses PostgresQL as Database. Developped with IntelliJ.
 
-## Requirements
+## Author
 
-Requirements for back-end part:
-- [x] a) data stored in database (PostgreSQL)
-- [ ] b) endpoints secured with Spring Security (with the use of JWT)
-- [ ] c) endpoints organised in controllers related to `functionality` (i.e., administrator related methods
-in AdminController.java class)
-- [x] d) @RestControllers used to generate JSON data for all endpoints.
+👤 **Pablo Ospino**
 
-## Steps
+* Website: https://ospino.me
+* Github: [@ospinooo](https://github.com/ospinooo)
+* LinkedIn: [@pabloospino](https://linkedin.com/in/pabloospino)
 
-- [x] Initialize project
-- [x] Construct Entity Relations (JPA)
-- [ ] Implement Simple CRUD for each model
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
