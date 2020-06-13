@@ -46,8 +46,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Event> events_created;
 
-    @Column(nullable = false, columnDefinition = "default 100")
-    private long points;
+
+    @Column(name = "points", nullable = false, columnDefinition = "int default 100")
+    private Integer points;
+
 
     /**
      * Before being removed we set all the events created owner to null.
@@ -71,6 +73,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.points = 100;
     }
 
     public Long getId() {
@@ -107,11 +110,12 @@ public class User {
         this.roles = roles;
     }
 
-    public long getPoints() {
+
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(long points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
