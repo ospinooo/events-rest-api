@@ -53,7 +53,7 @@ public class EventController {
             Date sqlDateInit = Date.valueOf(dateInit);
             Date sqlDateEnd= Date.valueOf(dateEnd);
             return eventRepository.findAllByDate(sqlDateInit,sqlDateEnd ,
-                    PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), sort)));
+                    PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.valueOf(direction), "date")));
         }
 
         direction = direction.toUpperCase();
