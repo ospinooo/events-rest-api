@@ -22,7 +22,7 @@ public class Event {
     private String subtitle;
 
     @Column(name="description", columnDefinition="TEXT")
-    private String description; // Markdown.
+    private String description;
 
     @Basic
     private Date date;
@@ -62,36 +62,6 @@ public class Event {
     public Date getDate() { return date; }
 
     public void setDate(Date date) { this.date = date; }
-    /* Times
-    private Time init_time;
-    private Time end_time;
-    private TimeZone timezone;
-
-
-    // Location
-    private Long latitude;
-    private Long longitude;
-
-
-    @OneToMany(mappedBy = "event")
-    private List<Fee> fees;
-
-    @OneToMany(mappedBy = "event")
-    private List<Ticket> tickets;
-
-    @ManyToMany(mappedBy = "events")
-    private Set<User> users;
-
-
-    // Contact Event Info
-    private String email;
-    private String telephone;
-
-
-    // Extra
-    // private Notification notification;
-    // private Attachment attachment;
-    */
 }
 
 
