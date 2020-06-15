@@ -42,16 +42,4 @@ public class UserController {
         userRepository.deleteById(id);
         return new ResponseEntity<User>(HttpStatus.OK);
     };
-
-
-    /*
-    @PostMapping
-    public ResponseEntity<User> addUser(){ return null; };
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id){ return null; };
-
-    */
-
-
 }

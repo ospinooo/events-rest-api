@@ -5,6 +5,10 @@
 
 > This repository holds the code for the spring boot rest api created with hibernate and uses PostgresQL as Database. Developped with IntelliJ.
 
+## Features
+
+- JWT: Json Web Token. For the Security.
+- Hibernate: ORM mapping
 ## Author
 
 👤 **Pablo Ospino**
