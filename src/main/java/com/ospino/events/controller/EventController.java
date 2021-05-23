@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 
 @RestController
-@CrossOrigin(origins = "http://pabloospino.com", maxAge = 3600)
+@CrossOrigin(origins = "http://pabloospino.com/*", maxAge = 3600)
 @RequestMapping("events")
 public class EventController {
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://pabloospino.com", maxAge = 3600)
+@CrossOrigin(origins = "http://pabloospino.com/*", maxAge = 3600)
 @RequestMapping("users")
 public class UserController {
 
