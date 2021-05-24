@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-@CrossOrigin(origins = "http://pabloospino.com/*", maxAge = 3600)
+@CrossOrigin(origins = "https://pabloospino.com", maxAge = 3600)
 @RequestMapping("tickets")
 public class TicketController {
 
